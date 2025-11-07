@@ -35,9 +35,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth-> auth.requestMatchers("/api/auth/login","/api/auth/register","api/health").permitAll()
+                .authorizeHttpRequests(auth-> auth.requestMatchers("/api/auth/login","/api/auth/register","/api/health").permitAll()
                         .requestMatchers(HttpMethod.GET,"api/albums","api/songs").hasAnyRole("USER","ADMIN")
                         .anyRequest().hasRole("ADMIN"))
+//                        .anyRequest().authenticated())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -49,9 +50,9 @@ public class SecurityConfig {
     }
 
 
-    private UrlBasedCorsConfigurationSource corsConfigurationSource (){
+    public UrlBasedCorsConfigurationSource corsConfigurationSource (){
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization","Content-Type"));
         config.setAllowCredentials(true);
