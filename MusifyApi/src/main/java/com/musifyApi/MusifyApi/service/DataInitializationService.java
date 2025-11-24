@@ -28,7 +28,7 @@ public class DataInitializationService implements CommandLineRunner {
         if(!userRepository.existsByEmail("admin@musify.com")) {
             User adminUser = User.builder()
                     .email("admin@musify.com")
-                    .password("admin123")
+                    .password(passwordEncoder.encode("admin123"))
                     .role(User.Role.ADMIN)
                     .build();
 

@@ -42,4 +42,10 @@ public class UserService {
                 .orElseThrow(()-> new UsernameNotFoundException("user not found for this email"));
 
     }
+
+    public User promoteToAdmin(String email){
+        User existingUser = findByEmail(email);
+        existingUser.setRole(User.Role.ADMIN);
+        return userRepository.save(existingUser);
+    }
 }
