@@ -1,8 +1,29 @@
+import AuthWrapper from "./components/AuthWrapper";
+import { Toaster } from "react-hot-toast";
+import Display from "./components/Display";
+import Sidebar from "./components/Sidebar";
+import Player from "./components/Player";
+import { useContext } from "react";
+import { PlayerContext } from "./context/PlayerContext";
+
 const App = () => {
+  const { audioRef, track } = useContext(PlayerContext);
   return (
-    <div className="text-center mt-10 font-bold text-3xl underline">
-      <h1>Welcome to Musify</h1>
-    </div>
+    <>
+      <Toaster />
+
+      <AuthWrapper>
+        <div className="h-screen bg-black">
+          <div className="h-[90%] flex">
+            <Sidebar />
+            <Display />
+          </div>
+          <Player />
+          {track && <audio ref={audioRef} src={track.file} preload="auto" />}
+        </div>
+      </AuthWrapper>
+    </>
   );
 };
+
 export default App;
